@@ -22,15 +22,14 @@ public class Ball_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //rigidbody2D.velocity = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
-        rigidbody2D.velocity = Vector3.up * SpeedRange.x;
+        rigidbody2D.velocity = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
+        //rigidbody2D.velocity = Vector3.up * SpeedRange.x;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
 
     void FixedUpdate()
     {
@@ -55,25 +54,33 @@ public class Ball_Controller : MonoBehaviour {
             _rigidbody2D.AddForce ( _vel * ( maxSpeed - currentSpeed ) );
         }
         
-
-
         if( (transform.position.x - rad) < cameraWorldMin.x || (transform.position.x + rad) > cameraWorldMax.x )
         {
             _vel.x *= -1;
             if( _vel.y <= 0.1f)
             {
-
+                float fVel = _vel.magnitude;
                 _vel.y += UnityEngine.Random.Range ( -0.5f, 0.5f );
+                _vel = _vel.normalized * fVel;
             }
         }
+
+        // remove ( transform.position.y - rad ) < cameraWorldMin.y to let the ball fall out the bottom.
 
         if ( ( transform.position.y - rad ) < cameraWorldMin.y || (transform.position.y + rad ) > cameraWorldMax.y )
         {
             _vel.y *= -1;
             if ( _vel.x <= 0.1f )
             {
+                float fVel = _vel.magnitude;
                 _vel.x += UnityEngine.Random.Range ( -0.5f, 0.5f );
+                _vel = _vel.normalized * fVel;
             }
+        }
+
+        if( (transform.position.y + rad ) < cameraWorldMin.y )
+        {
+            //ball has fallen
         }
 
         _rigidbody2D.velocity = _vel;
