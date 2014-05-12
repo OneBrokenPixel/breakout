@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using Darkhexxa.SimplePool;
+
 [RequireComponent(typeof(SpriteRenderer))]
 public class Brick_Controller : MonoBehaviour {
 
@@ -12,6 +14,7 @@ public class Brick_Controller : MonoBehaviour {
 
     public AnimationCurve ImpactAnimation;
 
+    private SimplePool particlePool;
 
     Transform       spriteTransform;
     SpriteRenderer  spriteRenderer;
@@ -20,6 +23,10 @@ public class Brick_Controller : MonoBehaviour {
     {
         spriteTransform = transform.FindChild ( "Sprite" );
         spriteRenderer = spriteTransform.GetComponent<SpriteRenderer> ();
+
+        GameObject go = GameObject.Find ( "DeathParticles" );
+        print ( go );
+		particlePool = go.GetComponent<SimplePool> ();
 
         Life = Mathf.Clamp ( Life, 0, (SpriteSequence.Length - 1) );
     }
@@ -63,6 +70,19 @@ public class Brick_Controller : MonoBehaviour {
         yield return null;
     }
 
+    IEnumerator DeathAnimationCoroutine ( )
+    {
+        ParticleSystem particles = particlePool.Spawn ( transform.position, transform.rotation ).particleSystem;
+        spriteRenderer.sprite = null;
+        particles.Emit ( 20 );
+
+        yield return new WaitForSeconds ( particles.startLifetime );
+
+        Destroy ( gameObject );
+        particlePool.Despawn ( particles.gameObject );
+        yield return null;
+    }
+
     void OnCollisionExit2D ( Collision2D coll )
     {
         if( !Immortal )
@@ -72,7 +92,7 @@ public class Brick_Controller : MonoBehaviour {
             Life--;
             if ( Life < 0 )
             {
-                Destroy ( gameObject );
+                StartCoroutine ( DeathAnimationCoroutine ( ) );
             }
             else
             {
