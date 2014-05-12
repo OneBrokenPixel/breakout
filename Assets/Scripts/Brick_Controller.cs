@@ -4,11 +4,11 @@ using System.Collections;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Brick_Controller : MonoBehaviour {
 
-    public bool Imortal = false;
+    public bool Immortal = false;
     public int Life = 1;
 
     public Sprite[] SpriteSequence;
-    public Sprite   SpriteImortal;
+    public Sprite   SpriteImmortal;
 
     public AnimationCurve ImpactAnimation;
 
@@ -26,10 +26,10 @@ public class Brick_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-        if(Imortal)
+
+        if ( Immortal )
         {
-            spriteRenderer.sprite = SpriteImortal;
+            spriteRenderer.sprite = SpriteImmortal;
         }
         else
         {
@@ -65,7 +65,7 @@ public class Brick_Controller : MonoBehaviour {
 
     void OnCollisionExit2D ( Collision2D coll )
     {
-        if( !Imortal )
+        if( !Immortal )
         {
             StopCoroutine ( "ImpactAnimationCoroutine" );
             StartCoroutine ( ImpactAnimationCoroutine ( coll.contacts [0].normal ) );
