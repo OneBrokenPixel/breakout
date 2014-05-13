@@ -25,7 +25,7 @@ public class Brick_Controller : MonoBehaviour {
         spriteRenderer = spriteTransform.GetComponent<SpriteRenderer> ();
 
         GameObject go = GameObject.Find ( "DeathParticles" );
-        print ( go );
+        //print ( go );
 		particlePool = go.GetComponent<SimplePool> ();
 
         Life = Mathf.Clamp ( Life, 0, (SpriteSequence.Length - 1) );
@@ -45,12 +45,21 @@ public class Brick_Controller : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+    void Update ()
+    {
+        if ( _impactTime < 1.0f )
+        {
+            float dist = ImpactAnimation.Evaluate ( _impactTime ) * 0.1f;
+            Vector3 offset = _impactNormal * dist;
+
+            spriteTransform.position = transform.position + offset;
+            _impactTime += Time.deltaTime;
+        }
 	}
 
     IEnumerator ImpactAnimationCoroutine ( Vector2 normal )
     {
+        print ( gameObject.ToString() + " start" );
         yield return new WaitForSeconds(0.1f);
         float t = Time.deltaTime;
         Vector3 offset = new Vector3 ();
@@ -67,28 +76,43 @@ public class Brick_Controller : MonoBehaviour {
         }
 
 
+        print ( gameObject.ToString () + " done" );
         yield return null;
     }
 
     IEnumerator DeathAnimationCoroutine ( )
     {
         ParticleSystem particles = particlePool.Spawn ( transform.position, transform.rotation ).particleSystem;
-        spriteRenderer.sprite = null;
-        particles.Emit ( 20 );
 
-        yield return new WaitForSeconds ( particles.startLifetime );
+        collider2D.enabled = false;
+        spriteRenderer.enabled = false;
+
+        particles.Play ();
+        
+        while(particles.isPlaying)
+            yield return new WaitForSeconds ( particles.startLifetime );
+
+        particles.Clear ();
+        particlePool.Despawn ( particles.gameObject );
 
         Destroy ( gameObject );
-        particlePool.Despawn ( particles.gameObject );
         yield return null;
+    }
+
+    Vector2 _impactNormal = new Vector2 ();
+    float _impactTime = 2.0f;
+
+
+    void FixedUpdate()
+    {
+
     }
 
     void OnCollisionExit2D ( Collision2D coll )
     {
         if( !Immortal )
         {
-            StopCoroutine ( "ImpactAnimationCoroutine" );
-            StartCoroutine ( ImpactAnimationCoroutine ( coll.contacts [0].normal ) );
+            //StopCoroutine ( "ImpactAnimationCoroutine" );
             Life--;
             if ( Life < 0 )
             {
@@ -97,6 +121,9 @@ public class Brick_Controller : MonoBehaviour {
             else
             {
                 spriteRenderer.sprite = SpriteSequence [Life];
+                //StartCoroutine_Auto ( ImpactAnimationCoroutine ( coll.contacts [0].normal ) );
+                _impactNormal = coll.contacts [0].normal;
+                _impactTime = Time.deltaTime;
             }
         }
     }
