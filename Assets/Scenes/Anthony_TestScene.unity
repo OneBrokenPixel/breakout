@@ -7388,6 +7388,7 @@ GameObject:
   - 58: {fileID: 752947617}
   - 114: {fileID: 752947616}
   - 50: {fileID: 752947615}
+  - 114: {fileID: 752947620}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -7471,6 +7472,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &752947620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: edd03874be7b7374eaa33914868f0906,
+    type: 2}
+  m_PrefabInternal: {fileID: 2005938637}
+  m_GameObject: {fileID: 752947614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dbffe57860da4481b6349a77d4bb5ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &785927856
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,31 +57,10 @@ public class Brick_Controller : MonoBehaviour {
         }
 	}
 
-    IEnumerator ImpactAnimationCoroutine ( Vector2 normal )
-    {
-        print ( gameObject.ToString() + " start" );
-        yield return new WaitForSeconds(0.1f);
-        float t = Time.deltaTime;
-        Vector3 offset = new Vector3 ();
-        Vector3 position = spriteTransform.position;
-
-        while( t < 1.0f)
-        {
-            float dist = ImpactAnimation.Evaluate ( t ) * 0.1f;
-            offset = normal * dist;
-
-            transform.localPosition = position + offset;
-            yield return null;
-            t += Time.deltaTime;
-        }
-
-
-        print ( gameObject.ToString () + " done" );
-        yield return null;
-    }
 
     IEnumerator DeathAnimationCoroutine ( )
     {
+        GameScript.Instance.Score += 10;
         ParticleSystem particles = particlePool.Spawn ( transform.position, transform.rotation ).particleSystem;
 
         collider2D.enabled = false;
