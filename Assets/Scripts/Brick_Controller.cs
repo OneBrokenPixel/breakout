@@ -24,7 +24,7 @@ public class Brick_Controller : MonoBehaviour {
         spriteTransform = transform.FindChild ( "Sprite" );
         spriteRenderer = spriteTransform.GetComponent<SpriteRenderer> ();
 
-        GameObject go = GameObject.Find ( "DeathParticles" );
+        GameObject go = GameObject.Find ( "DeathParticlesPool" );
         //print ( go );
 		particlePool = go.GetComponent<SimplePool> ();
 
