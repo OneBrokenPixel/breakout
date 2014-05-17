@@ -13,7 +13,7 @@ GameObject:
   - 95: {fileID: 9500000}
   m_Layer: 0
   m_Name: Brick_diamond
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd1381a313fec84590d02e86a0606dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Imortal: 0
+  Immortal: 0
   Life: 4
   SpriteSequence:
   - {fileID: 21300000, guid: a59c381701892f64893554c6ef491b30, type: 3}
@@ -109,7 +109,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d634fc23516d2084091d3dbc2230029d, type: 3}
   - {fileID: 21300000, guid: 86d202306a5e56b44bebda405ced5066, type: 3}
   - {fileID: 21300000, guid: 7ec06dde8c80cce4a8ad0970db541a44, type: 3}
-  SpriteImortal: {fileID: 21300000, guid: b03e475df55528e44889900de9571f23, type: 3}
+  SpriteImmortal: {fileID: 0}
   ImpactAnimation:
     serializedVersion: 2
     m_Curve:

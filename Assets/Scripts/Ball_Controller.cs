@@ -13,7 +13,7 @@ public class Ball_Controller : BasePoolComponent
     GameScript _gameScript;
 
     Vector3 _screenWidth = new Vector3 ();
-    Vector2 _vel = new Vector2();
+    Vector3 _vel = new Vector3();
 
     public Vector2 SpeedRange = new Vector2(2,8);
 
@@ -40,17 +40,10 @@ public class Ball_Controller : BasePoolComponent
 
     void FixedUpdate()
     {
-        _screenWidth.Set ( Screen.width, Screen.height, 0 );
-
-        Vector3 cameraWorldMax = _mainCamera.ScreenToWorldPoint ( _screenWidth );
-        Vector3 cameraWorldMin = _mainCamera.ScreenToWorldPoint ( Vector3.zero );
-
-        float minSpeed = SpeedRange.x * SpeedRange.x;
-        float maxSpeed = SpeedRange.y * SpeedRange.y;
-        float currentSpeed = _vel.sqrMagnitude;
-
-        float rad = _circleCollider.radius;
         _vel = _rigidbody2D.velocity;
+        float minSpeed = SpeedRange.x;
+        float maxSpeed = SpeedRange.y; ;
+        float currentSpeed = _vel.magnitude;
 
         if ( currentSpeed < minSpeed )
         {
@@ -60,48 +53,50 @@ public class Ball_Controller : BasePoolComponent
         {
             _rigidbody2D.AddForce ( _vel * ( maxSpeed - currentSpeed ) );
         }
-        
-        if( (transform.position.x - rad) < cameraWorldMin.x || (transform.position.x + rad) > cameraWorldMax.x )
+    }
+
+    void OnCollisionEnter2D ( Collision2D coll )
+    {
+        foreach( var contact in coll.contacts)
         {
-            _vel.x *= -1;
-            if( _vel.y <= 0.1f)
-            {
-                float fVel = _vel.magnitude;
-                _vel.y += UnityEngine.Random.Range ( -0.5f, 0.5f );
-                _vel = _vel.normalized * fVel;
-            }
+            Debug.DrawRay ( contact.point, -_vel, Color.red, 1f );
+            Debug.DrawRay ( contact.point, contact.normal, Color.green, 1f );
+            Debug.DrawRay ( contact.point, _rigidbody2D.velocity, Color.red, 1f );
         }
+    }
 
-        // remove ( transform.position.y - rad ) < cameraWorldMin.y to let the ball fall out the bottom.
-
-        if ( /*( transform.position.y - rad ) < cameraWorldMin.y ||*/ (transform.position.y + rad ) > cameraWorldMax.y )
+    void OnCollisionExit2D ( Collision2D coll )
+    {
+    }
+        /*
+    void OnTriggerEnter2D ( Collider2D other )
+    {
+        if ( other.GetType () == typeof ( EdgeCollider2D ) )
         {
-            _vel.y *= -1;
-            if ( _vel.x <= 0.1f )
-            {
-                float fVel = _vel.magnitude;
-                _vel.x += UnityEngine.Random.Range ( -0.5f, 0.5f );
-                _vel = _vel.normalized * fVel;
-            }
+            Debug.Log ( gameObject + " has entered" );
         }
+    }
+        */
 
-        if( (transform.position.y + rad ) < cameraWorldMin.y )
+    void OnTriggerExit2D ( Collider2D other )
+    {
+        if ( other.tag == "MainCamera" && other.GetType () == typeof ( BoxCollider2D ) )
         {
             pool.Despawn ( gameObject );
         }
-
-        _rigidbody2D.velocity = _vel;
     }
 
     public override void OnSpawn ()
     {
         ActiveBalls++;
-        rigidbody2D.velocity = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
+        _vel = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
+        rigidbody2D.velocity = _vel;
     }
 
     public override void OnDespawn ()
     {
         ActiveBalls--;
+        _vel = Vector2.zero;
         rigidbody2D.velocity = Vector2.zero;
 
     }

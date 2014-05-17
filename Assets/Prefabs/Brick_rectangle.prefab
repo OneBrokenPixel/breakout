@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Brick_rectangle
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd1381a313fec84590d02e86a0606dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Imortal: 0
+  Immortal: 0
   Life: 4
   SpriteSequence:
   - {fileID: 21300000, guid: 4aa0091450638454cb0a30e6764a7f77, type: 3}
@@ -86,7 +86,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9c1cecf5e7963ac409208997785a54c5, type: 3}
   - {fileID: 21300000, guid: 9b43fde77c501614488a1551d84af4bb, type: 3}
   - {fileID: 21300000, guid: 3941698e26c3a6944830fe9c506ec50a, type: 3}
-  SpriteImortal: {fileID: 21300000, guid: d39fb0e36b12b9c47b26382f302cbbaf, type: 3}
+  SpriteImmortal: {fileID: 0}
   ImpactAnimation:
     serializedVersion: 2
     m_Curve:

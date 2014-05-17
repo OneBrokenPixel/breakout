@@ -52,8 +52,8 @@ TextureImporter:
         y: 0
         width: 24
         height: 24
-      alignment: 5
-      pivot: {x: 1, y: .5}
+      alignment: 3
+      pivot: {x: 1, y: 1}
     - name: paddleRed_Center
       rect:
         serializedVersion: 2
@@ -61,8 +61,8 @@ TextureImporter:
         y: 0
         width: 56
         height: 24
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
     - name: paddleRed_Right
       rect:
         serializedVersion: 2
@@ -70,7 +70,7 @@ TextureImporter:
         y: 0
         width: 24
         height: 24
-      alignment: 4
-      pivot: {x: 0, y: .5}
+      alignment: 1
+      pivot: {x: 0, y: 1}
   spritePackingTag: 
   userData: 

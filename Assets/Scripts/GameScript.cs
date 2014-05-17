@@ -66,6 +66,8 @@ public class GameScript : MonoBehaviour {
     public Texture lifeImagae;
     public int StartingLives = 3;
 
+    public Bounds PlayArea {get;set;}
+
     public int Lives { get; set;}
     public int Score { get; set; }
 
