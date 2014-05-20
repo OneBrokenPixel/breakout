@@ -72,6 +72,8 @@ public class GameScript : MonoBehaviour {
     public int Lives { get; set;}
     public int Score { get; set; }
 
+    public Paddle_Controller.Paddle_State paddleState = new Paddle_Controller.Paddle_State();
+    public Ball_Controller.Ball_State ballState = new Ball_Controller.Ball_State ();
 
     public void OnDestroy ()
     {
@@ -90,6 +92,11 @@ public class GameScript : MonoBehaviour {
         _ballPool = t.GetComponent<SimplePool> ();
         Ball_Controller.ActiveBalls = 0;
         Lives = StartingLives;
+
+        foreach( Paddle_Controller paddle in paddels)
+        {
+            paddle.state = paddleState;
+        }
 	}
 	
     void OnGUI()
@@ -120,7 +127,10 @@ public class GameScript : MonoBehaviour {
         {
             GameObject ball = _ballPool.Spawn ( Vector3.zero, Quaternion.identity );
             //ball.transform.parent = paddels [0].LaunchPoint;
-            paddels [0].LaunchBall = ball.GetComponent<Ball_Controller> (); ;
+            Ball_Controller ballctrl = ball.GetComponent<Ball_Controller> ();
+            ballctrl.state = ballState;
+            ballctrl.isFree = false;
+            paddels [0].LaunchBall = ballctrl;
             Lives--;
         }
 

@@ -91,7 +91,6 @@ public class Brick_Controller : MonoBehaviour {
     {
         if( !Immortal )
         {
-            //StopCoroutine ( "ImpactAnimationCoroutine" );
             Life--;
             if ( Life < 0 )
             {
@@ -100,7 +99,6 @@ public class Brick_Controller : MonoBehaviour {
             else
             {
                 spriteRenderer.sprite = SpriteSequence [Life];
-                //StartCoroutine_Auto ( ImpactAnimationCoroutine ( coll.contacts [0].normal ) );
                 _impactNormal = coll.contacts [0].normal;
                 _impactTime = Time.deltaTime;
             }

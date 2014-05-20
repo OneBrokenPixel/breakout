@@ -2,14 +2,22 @@
 using System.Collections;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class Paddle_Controller : MonoBehaviour {
-
-    public float speed = 8.0f;
+public class Paddle_Controller : MonoBehaviour
+{
+    [System.Serializable]
+    enum Edge
+    {
+        LEFT, RIGHT, NONE
+    }
+    [System.Serializable]
+    public class Paddle_State
+    {
+        public float Speed = 8.0f;
+        public float Size = 1.0f;
+    }
 
     private BoxCollider2D _box;
-
     private Vector2 cp = new Vector2 ();
-
     private Transform _launchPoint;
     public Transform LaunchPoint
     {
@@ -18,13 +26,10 @@ public class Paddle_Controller : MonoBehaviour {
             return _launchPoint;
         }
     }
-
     public Ball_Controller LaunchBall { get; set; }
 
-    enum Edge
-    {
-        LEFT, RIGHT, NONE
-    }
+    public Paddle_State state;// = new Paddle_State();
+
 
     Edge _edge = Edge.NONE;
     Vector2 _vel = new Vector2 ();
@@ -49,16 +54,16 @@ public class Paddle_Controller : MonoBehaviour {
 
         UpdatePaddlePoints ();
 
-        _vel = Input.GetAxis ( "Horizontal" ) * Vector2.right * speed;
+        _vel = Input.GetAxis ( "Horizontal" ) * Vector2.right * state.Speed;
 
 
         switch(_edge)
         {
             case Edge.LEFT:
-                _vel.x = Mathf.Clamp ( _vel.x, 0, speed );
+                _vel.x = Mathf.Clamp ( _vel.x, 0, state.Speed );
                 break;
             case Edge.RIGHT:
-                _vel.x = Mathf.Clamp ( _vel.x, -speed, 0 );
+                _vel.x = Mathf.Clamp ( _vel.x, -state.Speed, 0 );
                 break;
             default:
                 break;

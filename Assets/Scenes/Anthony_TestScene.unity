@@ -2369,6 +2369,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeImagae: {fileID: 2800000, guid: 474e050f492059e448e834e7ea18d7fa, type: 3}
   StartingLives: 3
+  paddleState:
+    Speed: 8
+    Size: 1
+  ballState:
+    MinSpeed: 4
+    MaxSpeed: 8
+    RandomReboundTollerance: .999000013
 --- !u!1 &337185506
 GameObject:
   m_ObjectHideFlags: 0
@@ -12042,7 +12049,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed86db4e40d24f46b6869a80d66268d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  state:
+    Speed: 8
+    Size: 1
 --- !u!50 &1995485814
 Rigidbody2D:
   m_ObjectHideFlags: 0
