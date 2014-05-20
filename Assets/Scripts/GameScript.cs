@@ -62,6 +62,7 @@ public class GameScript : MonoBehaviour {
 #endregion
 
     SimplePool _ballPool;
+    Paddle_Controller[] paddels;
 
     public Texture lifeImagae;
     public int StartingLives = 3;
@@ -75,6 +76,11 @@ public class GameScript : MonoBehaviour {
     public void OnDestroy ()
     {
         applicationIsQuitting = true;
+    }
+
+    void Awake()
+    {
+        paddels = FindObjectsOfType<Paddle_Controller> ();
     }
 
 	// Use this for initialization
@@ -112,7 +118,9 @@ public class GameScript : MonoBehaviour {
 	
         if( Ball_Controller.ActiveBalls == 0 )
         {
-            _ballPool.Spawn ( Vector3.zero, Quaternion.identity );
+            GameObject ball = _ballPool.Spawn ( Vector3.zero, Quaternion.identity );
+            //ball.transform.parent = paddels [0].LaunchPoint;
+            paddels [0].LaunchBall = ball.GetComponent<Ball_Controller> (); ;
             Lives--;
         }
 

@@ -14,10 +14,18 @@ public class Ball_Controller : BasePoolComponent
 
     Vector3 _screenWidth = new Vector3 ();
     Vector3 _vel = new Vector3();
-
+    public Vector3 Vel
+    {
+        get
+        {
+            return _vel;
+        }
+    }
     public Vector2 SpeedRange = new Vector2(2,8);
 
     public static int ActiveBalls = 0;
+
+    public float reboundTollerance = 0.9f;
 
     void Awake()
     {
@@ -40,35 +48,48 @@ public class Ball_Controller : BasePoolComponent
 
     void FixedUpdate()
     {
-        _vel = _rigidbody2D.velocity;
-        float minSpeed = SpeedRange.x;
-        float maxSpeed = SpeedRange.y; ;
-        float currentSpeed = _vel.magnitude;
+        if ( transform.parent == null )
+        {
+            _vel = _rigidbody2D.velocity;
+            float minSpeed = SpeedRange.x;
+            float maxSpeed = SpeedRange.y; ;
+            float currentSpeed = _vel.magnitude;
 
-        if ( currentSpeed < minSpeed )
-        {
-            _rigidbody2D.AddForce ( _vel * ( minSpeed - currentSpeed ) );
-        }
-        else if ( currentSpeed > maxSpeed )
-        {
-            _rigidbody2D.AddForce ( _vel * ( maxSpeed - currentSpeed ) );
+            if ( currentSpeed < minSpeed )
+            {
+                _rigidbody2D.AddForce ( _vel * ( minSpeed - currentSpeed ) );
+            }
+            else if ( currentSpeed > maxSpeed )
+            {
+                _rigidbody2D.AddForce ( _vel * ( maxSpeed - currentSpeed ) );
+            }
         }
     }
 
     void OnCollisionEnter2D ( Collision2D coll )
     {
-        foreach( var contact in coll.contacts)
+        if ( transform.parent == null )
         {
-            Debug.DrawRay ( contact.point, -_vel, Color.red, 1f );
-            Debug.DrawRay ( contact.point, contact.normal, Color.green, 1f );
-            Debug.DrawRay ( contact.point, _rigidbody2D.velocity, Color.red, 1f );
+            foreach ( var contact in coll.contacts )
+            {
+                float dot = Vector2.Dot ( _rigidbody2D.velocity.normalized, Vector2.right );
+                if ( dot >= reboundTollerance || dot <= -reboundTollerance )
+                {
+
+                    rigidbody2D.velocity = Quaternion.Euler ( 0, 0, Random.Range ( -15, 15f ) ) * _rigidbody2D.velocity;
+                }
+
+                Debug.DrawRay ( contact.point, -_vel, Color.red, 1f );
+                Debug.DrawRay ( contact.point, contact.normal, Color.green, 1f );
+                Debug.DrawRay ( contact.point, _rigidbody2D.velocity, Color.red, 1f );
+            }
         }
     }
 
     void OnCollisionExit2D ( Collision2D coll )
     {
     }
-        /*
+    /*
     void OnTriggerEnter2D ( Collider2D other )
     {
         if ( other.GetType () == typeof ( EdgeCollider2D ) )
@@ -76,7 +97,7 @@ public class Ball_Controller : BasePoolComponent
             Debug.Log ( gameObject + " has entered" );
         }
     }
-        */
+    */
 
     void OnTriggerExit2D ( Collider2D other )
     {
@@ -86,11 +107,17 @@ public class Ball_Controller : BasePoolComponent
         }
     }
 
+    public void Launch(Vector2 direction)
+    {
+        _vel = direction * SpeedRange.x;
+        rigidbody2D.velocity = _vel;
+    }
+
     public override void OnSpawn ()
     {
         ActiveBalls++;
-        _vel = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
-        rigidbody2D.velocity = _vel;
+        //_vel = UnityEngine.Random.insideUnitCircle.normalized * SpeedRange.x;
+        //rigidbody2D.velocity = _vel;
     }
 
     public override void OnDespawn ()

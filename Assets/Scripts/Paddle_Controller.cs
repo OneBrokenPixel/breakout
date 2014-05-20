@@ -5,13 +5,21 @@ using System.Collections;
 public class Paddle_Controller : MonoBehaviour {
 
     public float speed = 8.0f;
-    public float MaxReboundAngle = 45.0f;
 
     private BoxCollider2D _box;
 
     private Vector2 cp = new Vector2 ();
-    private Vector2 lp = new Vector2 ();
-    private Vector2 rp = new Vector2 ();
+
+    private Transform _launchPoint;
+    public Transform LaunchPoint
+    {
+        get
+        {
+            return _launchPoint;
+        }
+    }
+
+    public Ball_Controller LaunchBall { get; set; }
 
     enum Edge
     {
@@ -23,6 +31,7 @@ public class Paddle_Controller : MonoBehaviour {
     void Awake ()
     {
         _box = GetComponent<BoxCollider2D> ();
+        _launchPoint = transform.FindChild ( "BallLaunchPoint" );
     }
 
 	// Use this for initialization
@@ -33,21 +42,12 @@ public class Paddle_Controller : MonoBehaviour {
     void UpdatePaddlePoints()
     {
         cp = transform.position;
-        lp = cp;
-        rp = cp;
-        lp.x -= 0.5f * _box.size.x;
-        rp.x += 0.5f * _box.size.x;
     }
 
 	// Update is called once per frame
 	void Update () {
 
         UpdatePaddlePoints ();
-
-        Debug.DrawRay ( cp, Vector2.up, Color.green );
-        Debug.DrawRay ( lp, Quaternion.Euler ( 0, 0, MaxReboundAngle ) * Vector2.up, Color.green );
-        Debug.DrawRay ( rp, Quaternion.Euler ( 0, 0,-MaxReboundAngle ) * Vector2.up, Color.green );
-
 
         _vel = Input.GetAxis ( "Horizontal" ) * Vector2.right * speed;
 
@@ -65,13 +65,32 @@ public class Paddle_Controller : MonoBehaviour {
         }
 
         rigidbody2D.velocity = _vel;
+
+        if( LaunchBall != null )
+        {
+
+            LaunchBall.transform.position = _launchPoint.position;
+            if( Input.GetButtonDown("Fire1") )
+            {
+                LaunchBall.Launch ( Vector2.up );
+                LaunchBall = null;
+            }
+        }
 	}
 
     void OnCollisionEnter2D ( Collision2D coll )
     {
         if ( coll.gameObject.tag == "Ball" )
         {
-
+            UpdatePaddlePoints ();
+            Ball_Controller ballScript = coll.gameObject.GetComponent ( typeof ( Ball_Controller ) ) as Ball_Controller;
+            foreach( var contact in coll.contacts)
+            {
+                float ballVel =  coll.rigidbody.velocity.magnitude;
+                Vector2 dist = contact.point - cp;
+                coll.rigidbody.velocity += dist * coll.rigidbody.mass * 5;
+                coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
+            }
         }
 
     }

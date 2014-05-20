@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpeedRange: {x: 4, y: 5}
+  reboundTollerance: .999000013
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
