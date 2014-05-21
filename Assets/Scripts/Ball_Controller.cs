@@ -3,7 +3,7 @@ using System.Collections;
 
 using Darkhexxa.SimplePool.Components;
 
-[RequireComponent ( typeof ( Rigidbody2D ), typeof ( CircleCollider2D ) )]
+[RequireComponent ( typeof ( Rigidbody2D ) )]
 public class Ball_Controller : BasePoolComponent
 {
     [System.Serializable]
@@ -14,12 +14,11 @@ public class Ball_Controller : BasePoolComponent
         public float RandomReboundTollerance = 0.999f;
     }
 
-    CircleCollider2D _circleCollider;
+    BoxCollider2D _boxCollider;
     Rigidbody2D _rigidbody2D;
-    Camera _mainCamera;
+    //Camera _mainCamera;
     GameScript _gameScript;
 
-    Vector3 _screenWidth = new Vector3 ();
     Vector3 _vel = new Vector3();
     public Vector3 Vel
     {
@@ -39,9 +38,7 @@ public class Ball_Controller : BasePoolComponent
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D> ();
-        _circleCollider = collider2D as CircleCollider2D;
         _gameScript = GameScript.Instance;
-        _mainCamera = Camera.main;
     }
 
 	// Use this for initialization
