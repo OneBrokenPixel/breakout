@@ -170,7 +170,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .144929409, y: -2.49936771, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400006}
@@ -275,6 +275,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeImagae: {fileID: 2800000, guid: 474e050f492059e448e834e7ea18d7fa, type: 3}
   StartingLives: 3
+  paddleState:
+    Speed: 8
+    Size: 1
+  ballState:
+    MinSpeed: 6
+    MaxSpeed: 8
+    RandomReboundTollerance: .999000013
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

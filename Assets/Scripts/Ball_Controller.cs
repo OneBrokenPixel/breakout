@@ -77,19 +77,17 @@ public class Ball_Controller : BasePoolComponent
     {
         if ( isFree == true )
         {
+            _vel = Vector2.zero;
             foreach ( var contact in coll.contacts )
             {
                 float dot = Vector2.Dot ( _rigidbody2D.velocity.normalized, Vector2.right );
                 if ( dot >= state.RandomReboundTollerance || dot <= -state.RandomReboundTollerance )
                 {
 
-                    rigidbody2D.velocity = Quaternion.Euler ( 0, 0, Random.Range ( -15, 15f ) ) * _rigidbody2D.velocity;
+                    _vel += Quaternion.Euler ( 0, 0, Random.Range ( -15, 15f ) ) * _rigidbody2D.velocity;
                 }
-
-                Debug.DrawRay ( contact.point, -_vel, Color.red, 1f );
-                Debug.DrawRay ( contact.point, contact.normal, Color.green, 1f );
-                Debug.DrawRay ( contact.point, _rigidbody2D.velocity, Color.red, 1f );
             }
+            _rigidbody2D.velocity = 0.5f * _vel;
         }
     }
 
