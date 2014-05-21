@@ -8738,7 +8738,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1475364749}
   - 212: {fileID: 1475364748}
-  - 58: {fileID: 1475364747}
   - 114: {fileID: 1475364746}
   - 50: {fileID: 1475364745}
   - 114: {fileID: 1475364744}
@@ -8806,18 +8805,6 @@ MonoBehaviour:
     MinSpeed: 6
     MaxSpeed: 8
     RandomReboundTollerance: .999000013
---- !u!58 &1475364747
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5800000, guid: edd03874be7b7374eaa33914868f0906,
-    type: 2}
-  m_PrefabInternal: {fileID: 239195723}
-  m_GameObject: {fileID: 1475364742}
-  m_Enabled: 0
-  m_Material: {fileID: 6200000, guid: 0399fd1d1e36f3b42b4f2548ffa6e596, type: 2}
-  m_IsTrigger: 0
-  m_Radius: .109999999
-  m_Center: {x: 0, y: 0}
 --- !u!212 &1475364748
 SpriteRenderer:
   m_ObjectHideFlags: 0

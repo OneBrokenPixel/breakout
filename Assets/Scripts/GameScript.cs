@@ -140,5 +140,8 @@ public class GameScript : MonoBehaviour {
         }
 	}
 
-
+    internal void ApplyDrop ( BrickDrop brickDrop )
+    {
+        Debug.LogWarning("Not Implmented ApplyDrop");
+    }
 }

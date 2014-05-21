@@ -28,9 +28,13 @@ public class BrickDrop : BasePoolComponent {
     {
     }
 
-    void OnTriggerEnter2D ( Collider2D col )
+    void OnTriggerEnter2D ( Collider2D other )
     {
-        Debug.Log ( "Triggered" );
+        if ( other.tag == "Paddle" )
+        {
+           GameScript.Instance.ApplyDrop ( this );
+            pool.Despawn ( gameObject );
+        }
     }
 
     void OnTriggerExit2D ( Collider2D other )

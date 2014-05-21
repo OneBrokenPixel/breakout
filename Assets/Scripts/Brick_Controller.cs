@@ -58,24 +58,13 @@ public class Brick_Controller : MonoBehaviour {
 	}
 
 
-    IEnumerator DeathAnimationCoroutine ( )
+    void KillBrick ( )
     {
         GameScript.Instance.Score += 10;
         ParticleSystem particles = particlePool.Spawn ( transform.position, transform.rotation ).particleSystem;
-
-        collider2D.enabled = false;
-        spriteRenderer.enabled = false;
-
         particles.Play ();
-        
-        while(particles.isPlaying)
-            yield return new WaitForSeconds ( particles.startLifetime );
-
-        particles.Clear ();
-        particlePool.Despawn ( particles.gameObject );
 
         Destroy ( gameObject );
-        yield return null;
     }
 
     Vector2 _impactNormal = new Vector2 ();
@@ -94,7 +83,7 @@ public class Brick_Controller : MonoBehaviour {
             Life--;
             if ( Life < 0 )
             {
-                StartCoroutine ( DeathAnimationCoroutine ( ) );
+                KillBrick ();
             }
             else
             {
