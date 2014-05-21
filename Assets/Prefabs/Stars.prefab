@@ -45,6 +45,7 @@ GameObject:
   - 198: {fileID: 19800004}
   - 199: {fileID: 19900004}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Stars
   m_TagString: Untagged
@@ -80,8 +81,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.23386, y: -4.9515152, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -96,6 +97,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dbffe57860da4481b6349a77d4bb5ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f447dda6b951f8f4d8e44d7398469890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!198 &19800000
@@ -347,7 +359,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: .200000003
+    radius: .300000012
     angle: 25
     length: 5
     boxX: 1
@@ -1399,7 +1411,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: .200000003
+    radius: .300000012
     angle: 25
     length: 5
     boxX: 1
@@ -2446,15 +2458,15 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: .200000003
-    angle: 9.54101276
+    radius: .300000012
+    angle: 22.6599998
     length: 5
     boxX: .333125383
     boxY: 1
     boxZ: .281423151
     placementMode: 0
     m_Mesh: {fileID: 0}
-    randomDirection: 0
+    randomDirection: 1
   EmissionModule:
     enabled: 1
     m_Type: 0

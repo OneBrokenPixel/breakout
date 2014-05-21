@@ -8,28 +8,16 @@ public class BrickDrop : BasePoolComponent {
 
     public   float DropGravity = 2;
 
+    Rigidbody2D _rigidbody2d;
+
     void Awake()
     {
-        rigidbody2D.gravityScale = DropGravity;
-
-    }
-
-	// Use this for initialization
-	void Start () {
-	    
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void FixedUpdate ()
-    {
+        _rigidbody2d = rigidbody2D;
     }
 
     void OnTriggerEnter2D ( Collider2D other )
     {
+        Debug.Log ( "Using: " + other.gameObject );
         if ( other.tag == "Paddle" )
         {
            GameScript.Instance.ApplyDrop ( this );
@@ -47,6 +35,7 @@ public class BrickDrop : BasePoolComponent {
 
     public override void OnSpawn ()
     {
+        _rigidbody2d.velocity = Vector2.up * -DropGravity;
     }
 
     public override void OnDespawn ()

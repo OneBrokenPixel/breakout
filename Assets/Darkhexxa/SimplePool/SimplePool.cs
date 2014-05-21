@@ -148,9 +148,10 @@ namespace Darkhexxa
 
             ComponentList _inactive = null; ///< list of inactive objects created;
 			ComponentList _active = null; ///< list of active objects spawned.
+            ComponentList _despawn = null; ///< list off active objects to be despawned;
 
             /**
-             * @brief Corutine for culling inactive objects
+             * @brief Coroutine for culling inactive objects
              */
 			IEnumerator CullRoutine()
 			{
@@ -167,6 +168,48 @@ namespace Darkhexxa
 					}
 				}
 			}
+
+            /**
+             * @brief Coroutine for safly Despawning objects at the end of the frame.
+             */
+
+            IEnumerator BackgroundProcess()
+            {
+                float t = 0;
+                while(true)
+                {
+                    
+                    yield return new WaitForEndOfFrame ();
+                    
+                    t += Time.deltaTime;
+
+                    for ( int i = 0; !_despawn.isEmpty; i++ )
+                    {
+                        GameObject obj = _despawn.RemoveTailGO ();
+                        obj.SetActive ( false );
+
+                        BasePoolComponent cmp = obj.GetComponent<BasePoolComponent> ();
+
+                        if ( cmp != null )
+                        {
+                            cmp.OnDespawn ();
+                        }
+
+                        _inactive.InsertAtTail ( ref obj );
+                    }
+
+                    if( data.cullInactive && t >= data.cullInterval )
+                    {
+                        t = 0f;
+                        int cullCount = _inactive.Count - data.batchCreateCount;
+                        print ( t + cullCount );
+                        if ( cullCount > 0 )
+                        {
+                            RemoveGameObjects ( _inactive, cullCount );
+                        }
+                    }
+                }
+            }
 
             /**
               * @brief generates new game objects.
@@ -281,22 +324,10 @@ namespace Darkhexxa
 			public void Despawn(GameObject obj)
 			{
 				PoolListableComponent listable = obj.GetComponent<PoolListableComponent>();
-				if( listable != null )
+				if( listable != null && listable.list.Equals(_active))
 				{
-					if( listable.list.Equals(_active) )
-					{
-						obj.SetActive(false);
-
-						BasePoolComponent cmp = obj.GetComponent<BasePoolComponent>();
-
-						if( cmp != null)
-						{
-							cmp.OnDespawn();
-						}
-
-						_active.Remove(obj);
-						_inactive.InsertAtTail(ref obj);
-					}
+					_active.Remove(obj);
+					_despawn.InsertAtTail(ref obj);
 				}
 			}
 
@@ -308,10 +339,8 @@ namespace Darkhexxa
 			void Start ()
 			{
 
-
-
-				StartCoroutine (CullRoutine ());
-
+				//StartCoroutine ( CullRoutine () );
+                StartCoroutine ( BackgroundProcess () );
 
 				/*
 				for(int i = 0; i < 6; i++)
@@ -338,6 +367,7 @@ namespace Darkhexxa
 
                 _inactive = new ComponentList ();
                 _active = new ComponentList ();
+                _despawn = new ComponentList ();
 
                 AddNewGameObjects ();
             }

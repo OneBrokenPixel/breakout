@@ -106,6 +106,7 @@ public class Paddle_Controller : MonoBehaviour
 
     void OnTriggerEnter2D ( Collider2D other )
     {
+        Debug.Log ( "Using: " + other.gameObject );
         if(other.tag == "Paddle")
         {
             Vector2 direction = (other.transform.position - this.transform.position).normalized;

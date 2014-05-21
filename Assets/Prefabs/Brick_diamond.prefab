@@ -11,7 +11,7 @@ GameObject:
   - 60: {fileID: 6000000}
   - 114: {fileID: 11400000}
   - 95: {fileID: 9500000}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Brick_diamond
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400002}
   - 212: {fileID: 21200000}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

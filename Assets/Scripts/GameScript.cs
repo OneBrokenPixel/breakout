@@ -62,6 +62,7 @@ public class GameScript : MonoBehaviour {
 #endregion
 
     SimplePool _ballPool;
+    SimplePool _dropPool;
     Paddle_Controller[] paddels;
 
     public Texture lifeImagae;
@@ -90,6 +91,10 @@ public class GameScript : MonoBehaviour {
         applicationIsQuitting = false;
         Transform t = transform.FindChild ( "BallPool" );
         _ballPool = t.GetComponent<SimplePool> ();
+
+        t = transform.FindChild ( "DropPool" );
+        _dropPool = t.GetComponent<SimplePool> ();
+
         Ball_Controller.ActiveBalls = 0;
         Lives = StartingLives;
 
@@ -143,5 +148,10 @@ public class GameScript : MonoBehaviour {
     internal void ApplyDrop ( BrickDrop brickDrop )
     {
         Debug.LogWarning("Not Implmented ApplyDrop");
+    }
+
+    internal void BrickDestroyedAt ( Transform transform )
+    {
+        _dropPool.Spawn ( transform.position, Quaternion.identity );
     }
 }

@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    prefab: {fileID: 100000, guid: edd03874be7b7374eaa33914868f0906, type: 2}
+    prefab: {fileID: 100000, guid: c8e92cd4e533bf6449906d5186ff191b, type: 2}
     maxCount: 0
     batchCreateCount: 1
     cullInactive: 1
