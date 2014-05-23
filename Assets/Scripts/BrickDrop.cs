@@ -10,6 +10,8 @@ public class BrickDrop : BasePoolComponent {
 
     Rigidbody2D _rigidbody2d;
 
+    public System.Action effect;
+
     void Awake()
     {
         _rigidbody2d = rigidbody2D;
@@ -20,7 +22,7 @@ public class BrickDrop : BasePoolComponent {
         Debug.Log ( "Using: " + other.gameObject );
         if ( other.tag == "Paddle" )
         {
-           GameScript.Instance.ApplyDrop ( this );
+            effect ();
             pool.Despawn ( gameObject );
         }
     }

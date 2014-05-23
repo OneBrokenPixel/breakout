@@ -19,6 +19,8 @@ public class Brick_Controller : MonoBehaviour {
     Transform       spriteTransform;
     SpriteRenderer  spriteRenderer;
 
+    public static int ActiveBricks = 0;
+
     void Awake()
     {
         spriteTransform = transform.FindChild ( "Sprite" );
@@ -42,6 +44,7 @@ public class Brick_Controller : MonoBehaviour {
         {
             spriteRenderer.sprite = SpriteSequence [Life];
         }
+        ActiveBricks++;
 	}
 	
 	// Update is called once per frame
@@ -67,6 +70,7 @@ public class Brick_Controller : MonoBehaviour {
         GameScript.Instance.BrickDestroyedAt ( transform );
 
         Destroy ( gameObject );
+        ActiveBricks--;
     }
 
     Vector2 _impactNormal = new Vector2 ();

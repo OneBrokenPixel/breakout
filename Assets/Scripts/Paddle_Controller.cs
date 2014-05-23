@@ -33,6 +33,8 @@ public class Paddle_Controller : MonoBehaviour
 
     Edge _edge = Edge.NONE;
     Vector2 _vel = new Vector2 ();
+
+    float height = 0f;
     void Awake ()
     {
         _box = GetComponent<BoxCollider2D> ();
@@ -41,7 +43,7 @@ public class Paddle_Controller : MonoBehaviour
 
 	// Use this for initialization
 	void Start () {
-	
+        height = transform.position.y;
 	}
 	
     void UpdatePaddlePoints()
@@ -50,7 +52,7 @@ public class Paddle_Controller : MonoBehaviour
     }
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
         UpdatePaddlePoints ();
 
@@ -81,7 +83,11 @@ public class Paddle_Controller : MonoBehaviour
                 LaunchBall = null;
             }
         }
-	}
+
+        Vector3 pos = transform.position;
+        pos.y = height;
+        transform.position = pos;
+    }
 
     void OnCollisionEnter2D ( Collision2D coll )
     {
@@ -96,12 +102,11 @@ public class Paddle_Controller : MonoBehaviour
                 coll.rigidbody.velocity += dist * coll.rigidbody.mass * 5;
                 coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
             }
+            _vel = rigidbody2D.velocity;
+            _vel.y = 0.0f;
+            rigidbody2D.velocity = _vel;
         }
 
-    }
-
-    void OnCollisionExit2D ( Collision2D coll )
-    {
     }
 
     void OnTriggerEnter2D ( Collider2D other )

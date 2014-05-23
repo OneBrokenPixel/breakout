@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 using Darkhexxa.SimplePool;
 
@@ -73,8 +74,12 @@ public class GameScript : MonoBehaviour {
     public int Lives { get; set;}
     public int Score { get; set; }
 
+    public float DropChance = 0.25f;
+
     public Paddle_Controller.Paddle_State paddleState = new Paddle_Controller.Paddle_State();
     public Ball_Controller.Ball_State ballState = new Ball_Controller.Ball_State ();
+
+    protected List<System.Action> _drops = new List<System.Action> ();
 
     public void OnDestroy ()
     {
@@ -102,6 +107,7 @@ public class GameScript : MonoBehaviour {
         {
             paddle.state = paddleState;
         }
+        ConfigureBrickDropList ();
 	}
 	
     void OnGUI()
@@ -143,15 +149,42 @@ public class GameScript : MonoBehaviour {
         {
             Debug.Log ( "GameOver!" );
         }
+        if( Brick_Controller.ActiveBricks == 0 )
+        {
+            Debug.Log ( "You Win GameOver!" );
+        }
 	}
 
-    internal void ApplyDrop ( BrickDrop brickDrop )
+    internal void ConfigureBrickDropList()
     {
-        Debug.LogWarning("Not Implmented ApplyDrop");
+        _drops.Add ( this.AddLife );
+        _drops.Add ( this.IncreasePaddleSize );
+        _drops.Add ( this.DecreasePaddleSize );
     }
 
     internal void BrickDestroyedAt ( Transform transform )
     {
-        _dropPool.Spawn ( transform.position, Quaternion.identity );
+        if ( _drops.Count != 0 &&  Random.Range ( 0f, 1f ) < DropChance )
+        {
+            BrickDrop drop = _dropPool.Spawn ( transform.position, Quaternion.identity ).GetComponent<BrickDrop> ();
+            int droptype = Random.Range ( 0, _drops.Count );
+            print ( droptype );
+            drop.effect = _drops[droptype];
+        }
+    }
+
+    internal void AddLife()
+    {
+        Lives++;
+    }
+
+    internal void IncreasePaddleSize()
+    {
+        Debug.Log ( "MakeBig" );
+    }
+
+    internal void DecreasePaddleSize ()
+    {
+        Debug.Log ( "MakeSmall" );
     }
 }
