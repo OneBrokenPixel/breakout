@@ -18,14 +18,6 @@ public class Paddle_Controller : MonoBehaviour
 
     private BoxCollider2D _box;
     private Vector2 cp = new Vector2 ();
-    private Transform _launchPoint;
-    public Transform LaunchPoint
-    {
-        get
-        {
-            return _launchPoint;
-        }
-    }
 
     private Ball_Controller _lanchBall;
     public Ball_Controller LaunchBall {
@@ -93,9 +85,9 @@ public class Paddle_Controller : MonoBehaviour
     void Awake ()
     {
         _box = GetComponent<BoxCollider2D> ();
-        _launchPoint = transform.FindChild ( "BallLaunchPoint" );
         _ballJoint = GetComponent<HingeJoint2D> ();
         _ballJoint.enabled = false;
+
         _left = transform.FindChild ( "Left" );
         _right = transform.FindChild ( "Right" );
         _center = transform.FindChild ( "Center" );
