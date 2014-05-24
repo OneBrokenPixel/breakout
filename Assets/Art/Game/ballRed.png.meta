@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ca136ad31ca9ada4f828a05baa067e6c
+guid: 6562ddcfb63c9bd4cbd937d5ec2bd11a
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -24,13 +24,13 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -44,33 +44,6 @@ TextureImporter:
     textureFormat: -2
     compressionQuality: 50
   spriteSheet:
-    sprites:
-    - name: paddleRed_Left
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 25
-        height: 24
-      alignment: 3
-      pivot: {x: 1, y: 1}
-    - name: paddleRed_Center
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 0
-        width: 50
-        height: 24
-      alignment: 2
-      pivot: {x: .5, y: 1}
-    - name: paddleRed_Right
-      rect:
-        serializedVersion: 2
-        x: 79
-        y: 0
-        width: 25
-        height: 24
-      alignment: 1
-      pivot: {x: 0, y: 1}
+    sprites: []
   spritePackingTag: 
   userData: 

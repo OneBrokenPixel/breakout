@@ -44,22 +44,58 @@ public class Paddle_Controller : MonoBehaviour
     }
 
     public Paddle_State state;// = new Paddle_State();
+    private Vector2 _currentSize = new Vector3 ( 1.0f, 1.0f );
+    public float CurrentSize
+    {
+        get
+        {
+            return _currentSize.x;
+        }
+        set
+        {
+            _currentSize.x = value;
+            Vector2 boxSize = _box.size;
+            boxSize.x = value+0.5f;
+            _box.size = boxSize;
 
+            Vector2 halfSize = new Vector2(0.5f * value,0);
+
+            _left.transform.localPosition = -halfSize;
+            _right.transform.localPosition = halfSize;
+
+            Vector2  scaleFactor = new Vector2 (value / 0.5f,1.0f);
+
+            _center.localScale = scaleFactor;
+
+        }
+    }
+
+    private  Transform _left;
+    private  Transform _right;
+    private  Transform _center;
 
     Edge _edge = Edge.NONE;
     Vector2 _vel = new Vector2 ();
 
     float height = 0f;
+
     void Awake ()
     {
         _box = GetComponent<BoxCollider2D> ();
         _launchPoint = transform.FindChild ( "BallLaunchPoint" );
+
+        _left = transform.FindChild ( "Left" );
+        _right = transform.FindChild ( "Right" );
+        _center = transform.FindChild ( "Center" );
+
     }
 
 	// Use this for initialization
 	void Start () {
         height = transform.position.y;
         state = GameScript.Instance.paddleState;
+
+        CurrentSize = state.Size;
 	}
 	
     void UpdatePaddlePoints()
@@ -103,6 +139,11 @@ public class Paddle_Controller : MonoBehaviour
         Vector3 pos = transform.position;
         pos.y = height;
         transform.position = pos;
+
+        if( CurrentSize != state.Size )
+        {
+            CurrentSize = state.Size;
+        }
     }
 
     void OnCollisionEnter2D ( Collision2D coll )

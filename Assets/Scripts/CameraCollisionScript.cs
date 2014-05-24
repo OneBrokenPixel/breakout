@@ -21,7 +21,6 @@ public class CameraCollisionScript : MonoBehaviour {
         _camera = camera;
         Transform paddleEdge = transform.FindChild ( "PaddelEdge" );
         _paddleEdgeBoxes = paddleEdge.GetComponents<BoxCollider2D> ();
-        print ( _paddleEdgeBoxes.Length );
         //lastCameraSize = _camera.orthographicSize;
     }
 

@@ -18,6 +18,8 @@ public abstract class Drop_PowerBase : MonoBehaviour
 
     public static float DropChance = 0.25f;
 
+    public Sprite Sprite;
+
     public static void CreateDrop( Transform t)
     {
         if ( _powers.Count != 0 && Random.Range ( 0f, 1f ) < DropChance )
@@ -36,6 +38,14 @@ public abstract class Drop_PowerBase : MonoBehaviour
 
     public virtual void InitaliseContainer ( Drop_Container contriner )
     {
+        if ( Sprite != null )
+        {
+            SpriteRenderer sr = contriner.GetComponent<SpriteRenderer> ();
+            if ( sr != null )
+            {
+                sr.sprite = Sprite;
+            }
+        }
     }
 
     public abstract void ApplyPower ();
