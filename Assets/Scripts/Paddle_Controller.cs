@@ -38,7 +38,13 @@ public class Paddle_Controller : MonoBehaviour
             _lanchBall = value;
             if ( _lanchBall != null )
             {
+                _ballJoint.connectedBody = value.rigidbody2D;
+                _ballJoint.enabled = true;
                 _lanchBall.isFree = false;
+            }
+            else
+            {
+                _ballJoint.enabled = false;
             }
         }
     }
@@ -79,14 +85,21 @@ public class Paddle_Controller : MonoBehaviour
 
     float height = 0f;
 
+    public AnimationCurve bump;
+    private float bumpTime = float.PositiveInfinity;
+
+    private HingeJoint2D _ballJoint;
+
     void Awake ()
     {
         _box = GetComponent<BoxCollider2D> ();
         _launchPoint = transform.FindChild ( "BallLaunchPoint" );
-
+        _ballJoint = GetComponent<HingeJoint2D> ();
+        _ballJoint.enabled = false;
         _left = transform.FindChild ( "Left" );
         _right = transform.FindChild ( "Right" );
         _center = transform.FindChild ( "Center" );
+
 
     }
 
@@ -97,16 +110,12 @@ public class Paddle_Controller : MonoBehaviour
 
         CurrentSize = state.Size;
 	}
-	
-    void UpdatePaddlePoints()
-    {
-        cp = transform.position;
-    }
 
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        UpdatePaddlePoints ();
+
+        cp = transform.position;
 
         _vel = Input.GetAxis ( "Horizontal" ) * Vector2.right * state.Speed;
 
@@ -125,19 +134,26 @@ public class Paddle_Controller : MonoBehaviour
 
         rigidbody2D.velocity = _vel;
 
-        if( LaunchBall != null )
+        if ( Input.GetButtonDown ( "Fire1" ) )
         {
-
-            LaunchBall.transform.position = _launchPoint.position;
-            if( Input.GetButtonDown("Fire1") )
+            if ( LaunchBall != null )
             {
                 LaunchBall.Launch ( Vector2.up );
                 LaunchBall = null;
             }
         }
 
+        float this_height = height;
+        if(  bumpTime <= 1.0f )
+        {
+
+            this_height += bump.Evaluate ( bumpTime );
+
+            bumpTime += Time.deltaTime;
+        }
+
         Vector3 pos = transform.position;
-        pos.y = height;
+        pos.y = this_height;
         transform.position = pos;
 
         if( CurrentSize != state.Size )
@@ -146,26 +162,56 @@ public class Paddle_Controller : MonoBehaviour
         }
     }
 
+    /*
+        void OnCollisionEnter2D ( Collision2D coll )
+        {
+            if ( coll.gameObject.tag == "Ball" )
+            {
+
+                cp = transform.position;
+
+                Ball_Controller ballScript = coll.gameObject.GetComponent ( typeof ( Ball_Controller ) ) as Ball_Controller;
+                foreach( var contact in coll.contacts)
+                {
+                    float ballVel =  coll.rigidbody.velocity.magnitude;
+                    Vector2 dist = contact.point - cp;
+                    coll.rigidbody.velocity += dist * coll.rigidbody.mass * 5;
+                    coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
+                }
+                _vel = rigidbody2D.velocity;
+                _vel.y = 0.0f;
+                rigidbody2D.velocity = _vel;
+            }
+
+        }
+
+    
+    */
     void OnCollisionEnter2D ( Collision2D coll )
     {
         if ( coll.gameObject.tag == "Ball" )
         {
-            UpdatePaddlePoints ();
+
+            cp = transform.position;
+            float halfSize = 0.5f * _currentSize.x;
+
             Ball_Controller ballScript = coll.gameObject.GetComponent ( typeof ( Ball_Controller ) ) as Ball_Controller;
+            float ballVel =  coll.rigidbody.velocity.magnitude;
+
+            Vector2 center = new Vector2 ();
             foreach( var contact in coll.contacts)
             {
-                float ballVel =  coll.rigidbody.velocity.magnitude;
-                Vector2 dist = contact.point - cp;
-                coll.rigidbody.velocity += dist * coll.rigidbody.mass * 5;
-                coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
+                center += 0.5f * contact.point;
             }
-            _vel = rigidbody2D.velocity;
-            _vel.y = 0.0f;
-            rigidbody2D.velocity = _vel;
+
+            Debug.DrawRay ( center, Vector2.up, Color.white, 1f );
+
+            coll.rigidbody.velocity += (center-cp) * coll.rigidbody.mass * 10f;
+            coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
+
         }
 
     }
-
     void OnTriggerEnter2D ( Collider2D other )
     {
         Debug.Log ( "Using: " + other.gameObject );
