@@ -133,6 +133,9 @@ public class Paddle_Controller : MonoBehaviour
                 LaunchBall.Launch ( Vector2.up );
                 LaunchBall = null;
             }
+
+            bumpTime = Time.deltaTime;
+
         }
 
         float this_height = height;
@@ -190,15 +193,19 @@ public class Paddle_Controller : MonoBehaviour
             Ball_Controller ballScript = coll.gameObject.GetComponent ( typeof ( Ball_Controller ) ) as Ball_Controller;
             float ballVel =  coll.rigidbody.velocity.magnitude;
 
-            Vector2 center = new Vector2 ();
+            Vector2 point = new Vector2 ();
             foreach( var contact in coll.contacts)
             {
-                center += 0.5f * contact.point;
+                point += 0.5f * contact.point;
             }
 
-            Debug.DrawRay ( center, Vector2.up, Color.white, 1f );
+            Debug.DrawRay ( point, Vector2.up, Color.white, 1f );
+            float x = ( point - cp ).x / halfSize;
 
-            coll.rigidbody.velocity += (center-cp) * coll.rigidbody.mass * 10f;
+
+
+            coll.rigidbody.velocity += Vector2.right * x * coll.rigidbody.mass * 10f;
+            coll.rigidbody.velocity += rigidbody2D.velocity * 0.5f;
             coll.rigidbody.velocity = coll.rigidbody.velocity.normalized * ballVel;
 
         }
