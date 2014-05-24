@@ -67,7 +67,9 @@ public class Brick_Controller : MonoBehaviour {
         ParticleSystem particles = particlePool.Spawn ( transform.position, transform.rotation ).particleSystem;
         particles.Play ();
 
-        GameScript.Instance.BrickDestroyedAt ( transform );
+        //GameScript.Instance.BrickDestroyedAt ( transform );
+
+        Drop_PowerBase.CreateDrop ( this.transform );
 
         Destroy ( gameObject );
         ActiveBricks--;

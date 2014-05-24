@@ -64,6 +64,15 @@ public class GameScript : MonoBehaviour {
 
     SimplePool _ballPool;
     SimplePool _dropPool;
+
+    public SimplePool DropPool
+    {
+        get
+        {
+            return _dropPool;
+        }
+    }
+
     Paddle_Controller[] paddels;
 
     public Texture lifeImagae;
@@ -78,8 +87,6 @@ public class GameScript : MonoBehaviour {
 
     public Paddle_Controller.Paddle_State paddleState = new Paddle_Controller.Paddle_State();
     public Ball_Controller.Ball_State ballState = new Ball_Controller.Ball_State ();
-
-    protected List<System.Action> _drops = new List<System.Action> ();
 
     public void OnDestroy ()
     {
@@ -102,12 +109,6 @@ public class GameScript : MonoBehaviour {
 
         Ball_Controller.ActiveBalls = 0;
         Lives = StartingLives;
-
-        foreach( Paddle_Controller paddle in paddels)
-        {
-            paddle.state = paddleState;
-        }
-        ConfigureBrickDropList ();
 	}
 	
     void OnGUI()
@@ -133,15 +134,15 @@ public class GameScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
-        if( Ball_Controller.ActiveBalls == 0 )
+
+        if ( Ball_Controller.ActiveBalls == 0 )
         {
             GameObject ball = _ballPool.Spawn ( Vector3.zero, Quaternion.identity );
-            //ball.transform.parent = paddels [0].LaunchPoint;
             Ball_Controller ballctrl = ball.GetComponent<Ball_Controller> ();
-            ballctrl.state = ballState;
-            ballctrl.isFree = false;
-            paddels [0].LaunchBall = ballctrl;
+            if ( paddels.Length != 0 )
+            {
+                paddels [0].LaunchBall = ballctrl;
+            }
             Lives--;
         }
 
@@ -154,37 +155,4 @@ public class GameScript : MonoBehaviour {
             Debug.Log ( "You Win GameOver!" );
         }
 	}
-
-    internal void ConfigureBrickDropList()
-    {
-        _drops.Add ( this.AddLife );
-        _drops.Add ( this.IncreasePaddleSize );
-        _drops.Add ( this.DecreasePaddleSize );
-    }
-
-    internal void BrickDestroyedAt ( Transform transform )
-    {
-        if ( _drops.Count != 0 &&  Random.Range ( 0f, 1f ) < DropChance )
-        {
-            BrickDrop drop = _dropPool.Spawn ( transform.position, Quaternion.identity ).GetComponent<BrickDrop> ();
-            int droptype = Random.Range ( 0, _drops.Count );
-            print ( droptype );
-            drop.effect = _drops[droptype];
-        }
-    }
-
-    internal void AddLife()
-    {
-        Lives++;
-    }
-
-    internal void IncreasePaddleSize()
-    {
-        Debug.Log ( "MakeBig" );
-    }
-
-    internal void DecreasePaddleSize ()
-    {
-        Debug.Log ( "MakeSmall" );
-    }
 }

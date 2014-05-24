@@ -26,7 +26,22 @@ public class Paddle_Controller : MonoBehaviour
             return _launchPoint;
         }
     }
-    public Ball_Controller LaunchBall { get; set; }
+
+    private Ball_Controller _lanchBall;
+    public Ball_Controller LaunchBall {
+        get
+        {
+            return _lanchBall;
+        }
+        set
+        {
+            _lanchBall = value;
+            if ( _lanchBall != null )
+            {
+                _lanchBall.isFree = false;
+            }
+        }
+    }
 
     public Paddle_State state;// = new Paddle_State();
 
@@ -44,6 +59,7 @@ public class Paddle_Controller : MonoBehaviour
 	// Use this for initialization
 	void Start () {
         height = transform.position.y;
+        state = GameScript.Instance.paddleState;
 	}
 	
     void UpdatePaddlePoints()

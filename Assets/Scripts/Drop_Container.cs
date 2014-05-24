@@ -4,13 +4,25 @@ using System.Collections;
 using Darkhexxa.SimplePool.Components;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class BrickDrop : BasePoolComponent {
+public class Drop_Container : BasePoolComponent {
 
     public   float DropGravity = 2;
 
     Rigidbody2D _rigidbody2d;
 
-    public System.Action effect;
+    private Drop_PowerBase _effect;
+    public Drop_PowerBase Effect
+    {
+        get
+        {
+            return _effect;
+        }
+        set
+        {
+            _effect = value;
+            _effect.InitaliseContainer ( this );
+        }
+    }
 
     void Awake()
     {
@@ -19,10 +31,9 @@ public class BrickDrop : BasePoolComponent {
 
     void OnTriggerEnter2D ( Collider2D other )
     {
-        Debug.Log ( "Using: " + other.gameObject );
         if ( other.tag == "Paddle" )
         {
-            effect ();
+            Effect.ApplyPower();
             pool.Despawn ( gameObject );
         }
     }

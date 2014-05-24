@@ -44,7 +44,8 @@ public class Ball_Controller : BasePoolComponent
 	// Use this for initialization
 	void Start () {
 
-        //rigidbody2D.velocity = Vector3.up * SpeedRange.x;
+        // get the reference to the global ball state
+        state = GameScript.Instance.ballState;
 	}
 	
 	// Update is called once per frame
